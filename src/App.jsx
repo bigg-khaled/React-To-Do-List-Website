@@ -1,10 +1,20 @@
 import "bootstrap/dist/css/bootstrap.css";
 import TaskBar from "./Components/TaskBar";
 import List from "./Components/List";
-import { useState } from "react";
+import Item from "./Components/Item";
+import { useEffect, useState } from "react";
 
 const App = () => {
-  const [toDos, setToDos] = useState([]);
+  const [toDos, setToDos] = useState(() => {
+    const localValue = localStorage.getItem("ITEMS");
+    if (localValue == null) return [];
+
+    return JSON.parse(localValue);
+  });
+
+  useEffect(() => {
+    localStorage.setItem("ITEMS", JSON.stringify(toDos));
+  }, [toDos]);
 
   function addToDo(title) {
     setToDos((currentToDos) => {
@@ -37,33 +47,7 @@ const App = () => {
     <div class="container mt-4">
       <TaskBar onSubmit={addToDo} />
       <h1 class="my-4">Task List</h1>
-      <ul class="list-group">
-        {toDos.length === 0 && "No To Dos"}
-        {toDos.map((todo) => {
-          return (
-            <li key={todo.id} class="list-group-item">
-              <input
-                class="form-check-input me-1"
-                type="checkbox"
-                value=""
-                id="firstCheckbox"
-                checked={todo.completed}
-                onChange={(e) => toggleTodo(todo.id, e.target.checked)}
-              />
-              <label class="form-check-label" for="firstCheckbox">
-                {todo.title}
-              </label>
-              <button
-                type="button"
-                class="btn btn-outline-danger"
-                onClick={() => deleteToDo(todo.id)}
-              >
-                Delete
-              </button>
-            </li>
-          );
-        })}
-      </ul>
+      <List toDos={toDos} toggleTodo={toggleTodo} deleteToDo={deleteToDo} />
     </div>
   );
 };

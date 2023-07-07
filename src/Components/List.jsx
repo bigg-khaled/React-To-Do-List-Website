@@ -1,24 +1,21 @@
 import React from "react";
+import Item from "./Item";
 
-const List = () => {
+const List = ({ toDos, toggleTodo, deleteToDo }) => {
   return (
     <>
-      <h1 class="my-4">Task Lists</h1>
       <ul class="list-group">
-        <li class="list-group-item">
-          <input
-            class="form-check-input me-1"
-            type="checkbox"
-            value=""
-            id="firstCheckbox"
-          />
-          <label class="form-check-label" for="firstCheckbox">
-            First checkbox
-          </label>
-          <button type="button" class="btn btn-outline-danger">
-            Delete
-          </button>
-        </li>
+        {toDos.length === 0 && "No To Dos"}
+        {toDos.map((todo) => {
+          return (
+            <Item
+              {...todo}
+              key={todo.id}
+              toggleTodo={toggleTodo}
+              deleteToDo={deleteToDo}
+            />
+          );
+        })}
       </ul>
     </>
   );
