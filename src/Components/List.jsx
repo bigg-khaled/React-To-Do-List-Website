@@ -3,7 +3,7 @@ import React from "react";
 const List = () => {
   return (
     <>
-      <h1 class="my-4">Task List</h1>
+      <h1 class="my-4">Task Lists</h1>
       <ul class="list-group">
         <li class="list-group-item">
           <input
